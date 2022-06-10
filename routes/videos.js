@@ -20,6 +20,7 @@ router
   })
   .post((req, res) => {
     const newVideoInfo = { ...req.body, id: uuid() };
+    console.log(newVideoInfo);
     const videos = JSON.parse(videosFile);
     const allVideos = [...videos, newVideoInfo];
     fs.writeFileSync("./data/videos.json", JSON.stringify(allVideos));

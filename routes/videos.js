@@ -8,7 +8,15 @@ router
   .route("/")
   .get((req, res) => {
     const videos = JSON.parse(videosFile);
-    res.json(videos);
+    const filteredVideos = videos.map(function (x) {
+      return (({ id, title, channel, image }) => ({
+        id,
+        title,
+        channel,
+        image,
+      }))(x);
+    });
+    res.json(filteredVideos);
   })
   .post((req, res) => {
     const newVideoInfo = { ...req.body, id: uuid() };
@@ -24,7 +32,7 @@ router.get("/:videoId", (req, res) => {
   const videos = JSON.parse(videosFile);
   const singleVideo = videos.find((video) => video.id === req.params.videoId);
   if (!singleVideo) {
-    res.status(404).send("Video not found");
+    res.status(404).send("No video with that id exists");
     return;
   }
 
